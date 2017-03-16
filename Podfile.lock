@@ -1,0 +1,24 @@
+PODS:
+  - jot (0.1.5):
+    - Masonry (~> 0.6.1)
+  - Masonry (0.6.4)
+
+DEPENDENCIES:
+  - jot (from `https://github.com/joshmotley/jot`)
+
+EXTERNAL SOURCES:
+  jot:
+    :git: https://github.com/joshmotley/jot
+
+CHECKOUT OPTIONS:
+  jot:
+    :commit: 2c457eccb240c3e66b70ef346d15c0ca4029450b
+    :git: https://github.com/joshmotley/jot
+
+SPEC CHECKSUMS:
+  jot: 0f5dc333defa6ad805d01adc3834b201c22510a7
+  Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
+
+PODFILE CHECKSUM: 8690523b2b303ddd03ef2791e3d767ae5eb8a78d
+
+COCOAPODS: 1.1.1
