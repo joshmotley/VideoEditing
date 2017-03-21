@@ -14,20 +14,32 @@ import MobileCoreServices
 import Masonry
 import Photos
 
-class ViewController: UIViewController, JotViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+protocol EditingViewControllerDelegate: class {
+    func didFinishEditing(sender: EditingViewController, asset: AVAsset)
+}
+
+class EditingViewController: UIViewController, JotViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var jotViewController: JotViewController = JotViewController()
+    
     var saveButton: UIButton = UIButton()
     var clearButton: UIButton = UIButton()
     var toggleDrawingButton: UIButton = UIButton()
     var playerLayer = AVPlayerLayer()
+    var avPlayer = AVPlayer()
     var asset: AVAsset!
     var didTakeVideo: Bool = false
     
+    weak var delegate:EditingViewControllerDelegate?
+    
     // MARK: Lifecycle
-
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
         jotViewController = JotViewController()
         
@@ -42,22 +54,23 @@ class ViewController: UIViewController, JotViewControllerDelegate, UIImagePicker
         jotViewController.textAlignment = .left
         jotViewController.drawingColor = UIColor.cyan
         
+        view.backgroundColor = UIColor.white
+        
         saveButton.setTitle("save", for: .normal)
         saveButton.setTitleColor(UIColor.black, for: .normal)
-        saveButton.addTarget(self, action: #selector(ViewController.saveAction), for: UIControlEvents.touchUpInside)
+        saveButton.addTarget(self, action: #selector(EditingViewController.saveAction), for: UIControlEvents.touchUpInside)
         
         clearButton.setTitle("clear", for: .normal)
         clearButton.setTitleColor(UIColor.black, for: .normal)
-        clearButton.addTarget(self, action: #selector(ViewController.clearAction), for: UIControlEvents.touchUpInside)
+        clearButton.addTarget(self, action: #selector(EditingViewController.clearAction), for: UIControlEvents.touchUpInside)
         
         toggleDrawingButton.setTitle("toggle", for: .normal)
         toggleDrawingButton.setTitleColor(UIColor.black, for: .normal)
-        toggleDrawingButton.addTarget(self, action: #selector(ViewController.toggleDrawingAction), for: UIControlEvents.touchUpInside)
+        toggleDrawingButton.addTarget(self, action: #selector(EditingViewController.toggleDrawingAction), for: UIControlEvents.touchUpInside)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
         self.addChildViewController(jotViewController)
         self.view.addSubview(jotViewController.view)
@@ -71,22 +84,22 @@ class ViewController: UIViewController, JotViewControllerDelegate, UIImagePicker
         
         self.view.addSubview(toggleDrawingButton)
         toggleDrawingButton.frame = CGRect(x: self.view.frame.size.width - 60, y: self.view.frame.size.height - 60, width: 50, height: 50)
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if didTakeVideo == false {
-            let pickerController = UIImagePickerController()
-            pickerController.delegate = self
-            pickerController.sourceType = .photoLibrary
-            pickerController.mediaTypes = [kUTTypeMovie as String, kUTTypeAVIMovie as String, kUTTypeVideo as String, kUTTypeMPEG4 as String]
-            pickerController.videoQuality = .typeHigh
-            didTakeVideo = true
-            
-            self.present(pickerController, animated: true, completion: nil)
-        }
+        let avItem = AVPlayerItem(asset: asset)
+        avPlayer = AVPlayer(playerItem: avItem)
+        self.playerLayer = AVPlayerLayer(player: avPlayer)
+        self.playerLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        self.view.layer.insertSublayer(self.playerLayer, below: self.jotViewController.view.layer)
+        avPlayer.play()
+        
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: avPlayer.currentItem, queue: .main, using: { (_) in
+            self.avPlayer.seek(to: kCMTimeZero)
+            self.avPlayer.play()
+        })
         
     }
     
@@ -177,6 +190,7 @@ class ViewController: UIViewController, JotViewControllerDelegate, UIImagePicker
         })
         
         jotViewController.clearAll()
+        self.avPlayer.pause()
         self.playerLayer.removeFromSuperlayer()
     }
     
@@ -201,38 +215,16 @@ class ViewController: UIViewController, JotViewControllerDelegate, UIImagePicker
     
     func exportDidFinish(session: AVAssetExportSession){
         
-        print("Session Stuff \(session) and status \(session.status)")
         if session.status == .completed {
             
             let outputURL = session.outputURL
             
             let asset = AVAsset(url: outputURL!)
-            let item = AVPlayerItem(asset: asset)
             
-            let avPlayer = AVPlayer(playerItem: item)
-            self.playerLayer = AVPlayerLayer(player: avPlayer)
-            playerLayer.frame = self.view.bounds;
-            self.view.layer.addSublayer(playerLayer)
-            avPlayer.play()
+            self.dismiss(animated: true, completion: {
+                self.delegate?.didFinishEditing(sender: self, asset: asset)
+            })
         }
-    }
-    
-    // MARK: Image Picker
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        self.dismiss(animated: true, completion:{
-            
-            
-            let videoNSURL = info[UIImagePickerControllerMediaURL] as! NSURL
-            
-            let videoURL = NSURL(fileURLWithPath: videoNSURL.path!)
-            self.asset = AVAsset(url: videoURL as URL)
-            let avPlayer = AVPlayer(url: videoURL as URL)
-            self.playerLayer = AVPlayerLayer(player: avPlayer)
-            self.playerLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-            self.view.layer.insertSublayer(self.playerLayer, below: self.jotViewController.view.layer)
-            avPlayer.play()
-        })
     }
     
     // MARK: Button Actions
@@ -246,7 +238,6 @@ class ViewController: UIViewController, JotViewControllerDelegate, UIImagePicker
         let drawnImage = jotViewController.renderImage(withScale: 2, on: UIColor.clear)
         
         output(image: drawnImage!)
-        
     }
     
     func toggleDrawingAction() {
@@ -265,7 +256,5 @@ class ViewController: UIViewController, JotViewControllerDelegate, UIImagePicker
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
 

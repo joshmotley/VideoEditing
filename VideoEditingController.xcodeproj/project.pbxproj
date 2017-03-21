@@ -8,21 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		03705A151E7747190081AE75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03705A141E7747190081AE75 /* AppDelegate.swift */; };
-		03705A171E7747190081AE75 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03705A161E7747190081AE75 /* ViewController.swift */; };
+		03705A171E7747190081AE75 /* EditingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03705A161E7747190081AE75 /* EditingViewController.swift */; };
 		03705A1A1E7747190081AE75 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03705A181E7747190081AE75 /* Main.storyboard */; };
 		03705A1C1E7747190081AE75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03705A1B1E7747190081AE75 /* Assets.xcassets */; };
 		03705A1F1E7747190081AE75 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03705A1D1E7747190081AE75 /* LaunchScreen.storyboard */; };
+		03F0DE441E7C98D400D012B3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F0DE421E7C98D400D012B3 /* ViewController.swift */; };
 		7F974826CF6D801C3E47ED1D /* Pods_VideoEditingController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBF9592A1E8419D08B8CA56 /* Pods_VideoEditingController.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		03705A111E7747190081AE75 /* VideoEditingController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoEditingController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03705A141E7747190081AE75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		03705A161E7747190081AE75 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		03705A161E7747190081AE75 /* EditingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingViewController.swift; sourceTree = "<group>"; };
 		03705A191E7747190081AE75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		03705A1B1E7747190081AE75 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		03705A1E1E7747190081AE75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		03705A201E7747190081AE75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03F0DE421E7C98D400D012B3 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = ../ViewController.swift; sourceTree = "<group>"; };
 		24DEC7CDE96A247C0C475E11 /* Pods-VideoEditingController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoEditingController.release.xcconfig"; path = "Pods/Target Support Files/Pods-VideoEditingController/Pods-VideoEditingController.release.xcconfig"; sourceTree = "<group>"; };
 		3BB491B4B71BEFE67375BB08 /* Pods-VideoEditingController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoEditingController.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VideoEditingController/Pods-VideoEditingController.debug.xcconfig"; sourceTree = "<group>"; };
 		ACBF9592A1E8419D08B8CA56 /* Pods_VideoEditingController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VideoEditingController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,7 +64,8 @@
 			isa = PBXGroup;
 			children = (
 				03705A141E7747190081AE75 /* AppDelegate.swift */,
-				03705A161E7747190081AE75 /* ViewController.swift */,
+				03705A161E7747190081AE75 /* EditingViewController.swift */,
+				03F0DE421E7C98D400D012B3 /* ViewController.swift */,
 				03705A181E7747190081AE75 /* Main.storyboard */,
 				03705A1B1E7747190081AE75 /* Assets.xcassets */,
 				03705A1D1E7747190081AE75 /* LaunchScreen.storyboard */,
@@ -212,7 +215,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03705A171E7747190081AE75 /* ViewController.swift in Sources */,
+				03F0DE441E7C98D400D012B3 /* ViewController.swift in Sources */,
+				03705A171E7747190081AE75 /* EditingViewController.swift in Sources */,
 				03705A151E7747190081AE75 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -379,6 +383,7 @@
 				03705A251E7747190081AE75 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
